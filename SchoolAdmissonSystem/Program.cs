@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Register API controllers
 builder.Services.AddControllers();
 
-// Allow the React frontend to access the API
+// Allow React frontend during local development
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("ReactFrontend", policy =>
@@ -18,25 +18,40 @@ builder.Services.AddCors(options =>
     });
 });
 
-// Configure PostgreSQL database
+// Configure PostgreSQL
+var connectionString = builder.Configuration
+    .GetConnectionString("DefaultConnection");
+
+if (string.IsNullOrWhiteSpace(connectionString))
+{
+    throw new InvalidOperationException(
+        "Database connection string 'DefaultConnection' is missing.");
+}
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    var connectionString = builder.Configuration
-        .GetConnectionString("DefaultConnection");
-
     options.UseNpgsql(connectionString);
 });
 
 var app = builder.Build();
 
-// Redirect HTTP requests to HTTPS
-app.UseHttpsRedirection();
+// Apply existing EF Core migrations automatically
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider
+        .GetRequiredService<ApplicationDbContext>();
 
-// Enable CORS
+    db.Database.Migrate();
+}
+
+// Use HTTPS redirection only during local development
+if (app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
+
 app.UseCors("ReactFrontend");
 
-// Map API endpoints
 app.MapControllers();
 
-// Start the application
 app.Run();
