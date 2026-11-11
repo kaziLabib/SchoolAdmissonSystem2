@@ -1,0 +1,15 @@
+AI Usage Disclosure
+AI tool used
+ChatGPT (OpenAI) was used as a development assistant during the School Admission System assignment.
+Areas where AI assistance was used
+- Interpreting the assignment requirements and breaking them into implementation steps.
+- Planning the ASP.NET Core, React, PostgreSQL, and Docker Compose structure.
+- Drafting and refining example backend and frontend code, including API integration and user interface behavior.
+- Troubleshooting local development issues involving Visual Studio, Git, Docker Desktop, WSL, and Docker Compose.
+- Preparing documentation and manual verification steps.
+Review and verification
+AI-generated suggestions were incorporated into the project and checked through local development and Docker execution. The frontend, backend, and PostgreSQL services were observed running in Docker, and the class-list API returned a successful response. The application was also checked through its browser interface.
+
+Limitations of verification: Running containers and manual UI checks do not, by themselves, prove every edge case. Automated backend tests, including the required concurrent seat-reservation test, should be run and their results documented before final submission. This document does not claim that unverified tests passed.
+Responsibility and corrections
+The developer is responsible for reviewing, adapting, testing, and submitting the final implementation. AI suggestions may contain errors or omit requirements; they should be checked against the assignment and actual application behavior. Any corrections made during testing should be committed to the repository.
